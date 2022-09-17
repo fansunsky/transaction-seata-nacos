@@ -1,0 +1,36 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: trade-center
+  cloud:
+    nacos:
+      # 这里配置的是当前服务所要注册到的Nacos地址
+      discovery:
+        server-addr: 127.0.0.1:8848
+        group: TRADE_GROUP
+
+#  cloud:
+#    alibaba:
+#      seata:
+#        tx-service-group: saint-trade-tx-group
+
+seata:
+  # 属性需要seata-server端 config.txt文件中的service.vgroupMapping后的值保持一致
+  # 即，nacos配置中心中要存在dataId为 service.vgroupMapping.saint-trade-tx-group 的配置
+  tx-service-group: saint-trade-tx-group
+  # 采用nacos作为配置中心
+  config:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
+  # 当seata-server采用nacos做为注册中心时（通过以下信息获取seata-server实例列表）
+  registry:
+    type: nacos
+    nacos:
+      # seata-server的应用名称
+      application: seata-server
+      # seata-server注册到的nacos服务地址
+      server-addr: 127.0.0.1:8848
+      group: SEATA_GROUP
